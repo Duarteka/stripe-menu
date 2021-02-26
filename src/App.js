@@ -4,16 +4,15 @@ import GlobalStyles from './styles/GlobalStyles';
 import Layout from './components/Layout';
 import Navbar from './components/Navebar';
 
+function App() {
+  return (
+    <>
+      <Layout>
+        <Navbar />
+      </Layout>
 
- function App() {
-  return ( 
-  <>
-  <Layout>
-      <Navbar /> 
-  </Layout>
-   
-   <GlobalStyles />
-  </>
+      <GlobalStyles />
+    </>
   );
 }
 
