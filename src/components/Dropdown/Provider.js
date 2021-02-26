@@ -1,23 +1,21 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState , useEffect} from "react";
 
-React.useContext(Context);
+export const Context = React.createContext();
 
-const Context = React;
+
 
 export function DropdownProvider({ children }){;
-    const [options, setOptions] = React.useState([]);
-    const[targetId, setTargetId] = React.useState(null);
-    const [changeId, setCachedId] = React.useState(null);
-
-
-
+    const [options, setOptions] = useState([]);
+    const[targetId, setTargetId] = useState(null);
+    const [cachedId, setCachedId] = useState(null);
+    
     const registerOption = useCallback(({
         id,
         optionDimesions,
         optionCenterX,
         WrappedContent,
         backgroundHeight, 
-}) => {
+    }) => {
     setOptions(items => [
         ...items,
         {
@@ -26,35 +24,55 @@ export function DropdownProvider({ children }){;
             optionCenterX,
             WrappedContent,
             backgroundHeight,  
-        }
-    ])
-     
-},[setOptions]);
+        },
+    ]);
+ },
+    [setOptions]
+);
 
-const updateOptionProps = useCallback((opcionId, props) => {
+const updateOptionProps = useCallback((optionId, props) => {
     setOptions(items => 
         items.map(item => {
-            if(item.id === optionId, props){
-                item = { ... item, ...props };
+            if(item.id === optionId, props) {
+                item = { ...item, ...props };
             }
             return item;
         }))
-}, [setOptions]
+    }, 
+[setOptions]
 );
 
 const getOptionbyId = useCallback(
-    (id) => options.find((item) => item.id ==id)
+    (id) => options.find((item) => item.id === id),
     [options]
-    );
+);
 
+const deleteOptionById = useCallback (
+    (id) => {
+    setOptions(items => items.filter(item => item.id !== id));
+    }, 
+    [options]
+);
 
+useEffect(()=>{
+    if(targetId !== null) setCachedId(targetId);
+}, [targetId])
+ 
     return (
-        <Context.Provider
-        value={{
+        <Context.Provider 
+            value={{
+                registerOption,
+                updateOptionProps,
+                getOptionbyId,
+                deleteOptionById,
+                options,
+                targetId,
+                setTargetId,
+                cachedId,
+                setCachedId
 
-        }}>
 
-        </Context.Provider>
+        }}>{children}</Context.Provider>
     )
 
 }
