@@ -37,7 +37,7 @@ const updateOptionProps = useCallback((optionId, props) => {
                 item = { ...item, ...props };
             }
             return item;
-        }))
+        }));
     }, 
 [setOptions]
 );
